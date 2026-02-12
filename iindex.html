@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartEdu Tools</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+
+body{
+background:#0b1f3a;
+color:white;
+}
+
+header{
+text-align:center;
+padding:60px 20px;
+animation:fadeIn 1.5s ease-in-out;
+}
+
+header img{
+width:90px;
+margin-bottom:20px;
+}
+
+h1{font-size:32px;font-weight:700;}
+p{opacity:0.9;margin-top:10px;}
+
+.controls{
+text-align:center;
+margin:20px;
+}
+
+.controls input, .controls select{
+padding:10px;
+margin:5px;
+border-radius:20px;
+border:none;
+outline:none;
+font-size:16px;
+}
+
+.controls select{min-width:150px;}
+
+.container{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+padding:40px;
+}
+
+.card{
+background:rgba(255,255,255,0.08);
+padding:20px;
+border-radius:15px;
+backdrop-filter:blur(10px);
+transition:0.4s;
+animation:fadeUp 1s ease-in-out;
+}
+
+.card:hover{
+transform:translateY(-8px);
+background:rgba(255,255,255,0.18);
+}
+
+.card h3{margin-bottom:10px;}
+.card p{font-size:14px;opacity:0.85;}
+.card a{
+display:inline-block;
+margin-top:10px;
+padding:8px 15px;
+background:#00c6ff;
+border-radius:8px;
+color:white;
+text-decoration:none;
+font-size:14px;
+}
+
+.stars{margin-top:8px;}
+.stars span{
+cursor:pointer;
+font-size:20px;
+color:#ccc;
+margin-right:2px;
+}
+.stars .active{color:gold;}
+
+.lang-switcher{
+position:fixed;
+top:15px;
+right:15px;
+z-index:1000;
+font-size:12px;
+padding:5px;
+border-radius:5px;
+}
+
+footer{
+text-align:center;
+padding:30px;
+background:rgba(0,0,0,0.4);
+margin-top:40px;
+}
+
+@keyframes fadeIn{
+from{opacity:0;}
+to{opacity:1;}
+}
+
+@keyframes fadeUp{
+from{opacity:0;transform:translateY(20px);}
+to{opacity:1;transform:translateY(0);}
+}
+</style>
+</head>
+<body>
+
+<div class="lang-switcher">
+<select id="languageSelect" onchange="changeLanguage()">
+<option value="kk">Қаз</option>
+<option value="ru">Рус</option>
+<option value="en">En</option>
+</select>
+</div>
+
+<header>
+<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+<h1 id="title"></h1>
+<p id="desc"></p>
+</header>
+
+<div class="controls">
+<input type="text" id="search">
+<select id="categoryFilter"></select>
+</div>
+
+<div class="container" id="platforms"></div>
+
+<script>
+let currentLang="kk";
+
+const uiText={
+title:{
+kk:"SmartEdu Tools",
+ru:"SmartEdu Tools",
+en:"SmartEdu Tools"
+},
+desc:{
+kk:"Оқыту, тестілеу және визуалды материал жасауға арналған үздік құралдар",
+ru:"Лучшие инструменты для обучения, тестирования и создания материалов",
+en:"Best tools for teaching, testing and creating visuals"
+},
+search:{
+kk:"Іздеу...",
+ru:"Поиск...",
+en:"Search..."
+},
+categories:{
+all:{kk:"Барлығы",ru:"Все",en:"All"},
+planning:{kk:"Жоспарлау",ru:"Планирование",en:"Planning"},
+test:{kk:"Тесттер",ru:"Тесты",en:"Tests"},
+design:{kk:"Дизайн",ru:"Дизайн",en:"Design"},
+video:{kk:"Видео",ru:"Видео",en:"Video"},
+analysis:{kk:"Аналитика",ru:"Аналитика",en:"Analytics"},
+productivity:{kk:"Өнімділік",ru:"Продуктивность",en:"Productivity"}
+},
+open:{
+kk:"Өту",
+ru:"Открыть",
+en:"Open"
+}
+};
+
+let platforms=[
+["ChatGPT",{kk:"Сабақ жоспары мен тапсырма",ru:"Планирование уроков и заданий",en:"Lesson planning and tasks"},"planning","https://chat.openai.com"],
+["Canva",{kk:"Презентация және инфографика",ru:"Презентации и инфографика",en:"Presentations and infographics"},"design","https://www.canva.com"],
+["Kahoot",{kk:"Интерактивті викторина",ru:"Интерактивная викторина",en:"Interactive quiz"},"test","https://kahoot.com"],
+["Quizizz",{kk:"Онлайн тест",ru:"Онлайн тест",en:"Online test"},"test","https://quizizz.com"],
+["Google Forms",{kk:"Сауалнама және тест",ru:"Опросы и тесты",en:"Forms and quizzes"},"test","https://forms.google.com"],
+["Notion AI",{kk:"Жоспар және жазба",ru:"Планирование и заметки",en:"Planning and notes"},"planning","https://notion.so"],
+["Perplexity AI",{kk:"Материал іздеу",ru:"Поиск информации",en:"Information search"},"planning","https://perplexity.ai"],
+["Socratic",{kk:"Студент сұрағына жауап",ru:"Ответы на вопросы студентов",en:"Student Q&A"},"planning","https://socratic.org"],
+["Grammarly",{kk:"Мәтінді тексеру",ru:"Проверка текста",en:"Grammar checking"},"analysis","https://grammarly.com"],
+["DeepL",{kk:"Аударма",ru:"Перевод",en:"Translation"},"analysis","https://deepl.com"],
+["QuillBot",{kk:"Қайта жазу",ru:"Перефразирование текста",en:"Paraphrasing tool"},"analysis","https://quillbot.com"],
+["EdPuzzle",{kk:"Видео тест",ru:"Видео тестирование",en:"Video quizzes"},"video","https://edpuzzle.com"],
+["GitHub Copilot",{kk:"Бағдарламалау көмекшісі",ru:"Помощник программиста",en:"Coding assistant"},"planning","https://github.com/features/copilot"],
+["ChatPDF",{kk:"PDF талдау",ru:"Анализ PDF",en:"PDF analysis"},"analysis","https://chatpdf.com"],
+["Runway ML",{kk:"Видео және анимация",ru:"Видео и анимация",en:"Video and animation"},"video","https://runwayml.com"],
+["DALL·E",{kk:"AI сурет генерациясы",ru:"Генерация изображений ИИ",en:"AI image generation"},"design","https://openai.com/dall-e"],
+["Midjourney",{kk:"Креативті иллюстрация",ru:"Креативные иллюстрации",en:"Creative illustrations"},"design","https://midjourney.com"],
+["Stable Diffusion",{kk:"AI сурет",ru:"ИИ изображения",en:"AI images"},"design","https://stability.ai"],
+["Synthesia",{kk:"AI видео сабақ",ru:"ИИ видео уроки",en:"AI video lessons"},"video","https://synthesia.io"],
+["Pictory",{kk:"Мәтін → видео",ru:"Текст → видео",en:"Text to video"},"video","https://pictory.ai"],
+["Designs.ai",{kk:"Видео және дизайн",ru:"Видео и дизайн",en:"Video and design"},"video","https://designs.ai"],
+["Elai.io",{kk:"Онлайн видео генерация",ru:"Онлайн генерация видео",en:"Online video generator"},"video","https://elai.io"],
+["Century Tech",{kk:"Жеке оқу траекториясы",ru:"Индивидуальная траектория обучения",en:"Personalized learning path"},"analysis","https://century.tech"],
+["Squirrel AI",{kk:"Адаптивті оқыту",ru:"Адаптивное обучение",en:"Adaptive learning"},"analysis","https://squirrelai.com"],
+["Kidaptive",{kk:"Оқушы талдау",ru:"Аналитика ученика",en:"Student analytics"},"analysis","https://kidaptive.com"],
+["Gradescope",{kk:"Автоматты бағалау",ru:"Автоматическая проверка",en:"Automated grading"},"analysis","https://gradescope.com"],
+["Otter.ai",{kk:"Дәріс транскрипциясы",ru:"Транскрипция лекций",en:"Lecture transcription"},"analysis","https://otter.ai"],
+["Tinkercad",{kk:"3D модельдеу",ru:"3D моделирование",en:"3D modeling"},"planning","https://tinkercad.com"],
+["Jasper AI",{kk:"Креативті мәтін",ru:"Креативный текст",en:"Creative writing"},"planning","https://jasper.ai"],
+["Quillionz",{kk:"Сұрақ генерациялау",ru:"Генерация вопросов",en:"Question generator"},"planning","https://quillionz.com"],
+["Figma",{kk:"UI/UX дизайн",ru:"UI/UX дизайн",en:"UI/UX design"},"design","https://figma.com"],
+["Photoshop",{kk:"Фото өңдеу",ru:"Редактирование фото",en:"Photo editing"},"design","https://adobe.com/photoshop"],
+["Illustrator",{kk:"Векторлық дизайн",ru:"Векторный дизайн",en:"Vector design"},"design","https://adobe.com/illustrator"],
+["Premiere Pro",{kk:"Кәсіби видео редактор",ru:"Профессиональный видеоредактор",en:"Professional video editor"},"video","https://adobe.com/premiere"],
+["YouTube Studio",{kk:"YouTube басқару",ru:"Управление YouTube",en:"YouTube management"},"video","https://studio.youtube.com"],
+["OBS Studio",{kk:"Тікелей эфир",ru:"Прямые трансляции",en:"Live streaming"},"video","https://obsproject.com"],
+["DaVinci Resolve",{kk:"Видео монтаж және color grading",ru:"Монтаж и цветокоррекция",en:"Video editing and color grading"},"video","https://blackmagicdesign.com"],
+["Google Analytics",{kk:"Сайт аналитикасы",ru:"Аналитика сайта",en:"Website analytics"},"analysis","https://analytics.google.com"],
+["SEMrush",{kk:"SEO және маркетинг аналитикасы",ru:"SEO и маркетинг аналитика",en:"SEO and marketing analytics"},"analysis","https://semrush.com"],
+["Ahrefs",{kk:"SEO талдау",ru:"SEO анализ",en:"SEO analysis"},"analysis","https://ahrefs.com"],
+["Hotjar",{kk:"Пайдаланушы әрекетін талдау",ru:"Анализ поведения пользователей",en:"User behavior analytics"},"analysis","https://hotjar.com"],
+["Trello",{kk:"Жобаларды басқару",ru:"Управление проектами",en:"Project management"},"productivity","https://trello.com"],
+["Asana",{kk:"Командалық жұмыс",ru:"Командная работа",en:"Team collaboration"},"productivity","https://asana.com"],
+["Slack",{kk:"Чат жүйесі",ru:"Корпоративный чат",en:"Team chat"},"productivity","https://slack.com"],
+["Notion",{kk:"Жоспарлау және жазба",ru:"Планирование и заметки",en:"Planning and notes"},"productivity","https://notion.so"],
+["ClickUp",{kk:"Тапсырма менеджері",ru:"Менеджер задач",en:"Task manager"},"productivity","https://clickup.com"],
+["Zoom",{kk:"Онлайн конференция",ru:"Онлайн конференции",en:"Online meetings"},"productivity","https://zoom.us"],
+["Miro",{kk:"Онлайн тақта",ru:"Онлайн доска",en:"Online whiteboard"},"productivity","https://miro.com"],
+["Zapier",{kk:"Автоматтандыру",ru:"Автоматизация",en:"Automation"},"productivity","https://zapier.com"],
+["Make",{kk:"Процесс автоматизациясы",ru:"Автоматизация процессов",en:"Workflow automation"},"productivity","https://make.com"]
+];
+
+function render(list){
+let container=document.getElementById('platforms');
+container.innerHTML="";
+list.forEach(p=>{
+container.innerHTML+=`
+<div class="card">
+<h3>${p[0]}</h3>
+<p>${p[1][currentLang]}</p>
+<a href="${p[3]}" target="_blank">${uiText.open[currentLang]}</a>
+</div>
+`;
+});
+}
+
+function changeLanguage(){
+currentLang=document.getElementById('languageSelect').value;
+
+document.getElementById("title").textContent=uiText.title[currentLang];
+document.getElementById("desc").textContent=uiText.desc[currentLang];
+document.getElementById("search").placeholder=uiText.search[currentLang];
+
+let cat=document.getElementById("categoryFilter");
+cat.innerHTML=`
+<option value="all">${uiText.categories.all[currentLang]}</option>
+<option value="planning">${uiText.categories.planning[currentLang]}</option>
+<option value="test">${uiText.categories.test[currentLang]}</option>
+<option value="design">${uiText.categories.design[currentLang]}</option>
+<option value="video">${uiText.categories.video[currentLang]}</option>
+<option value="analysis">${uiText.categories.analysis[currentLang]}</option>
+<option value="productivity">${uiText.categories.productivity[currentLang]}</option>
+`;
+
+render(platforms);
+}
+
+changeLanguage();
+</script>
+
+<footer>
+© 2026 SmartEdu Tools
+</footer>
+
+</body>
+</html>
