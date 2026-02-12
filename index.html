@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Колледж оқытушыларына арналған 30 цифрлық құрал</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+color:white;
+}
+
+header{
+text-align:center;
+padding:60px 20px;
+animation:fadeIn 1.5s ease-in-out;
+}
+
+header img{
+width:90px;
+margin-bottom:20px;
+}
+
+h1{font-size:32px;font-weight:700;}
+p{opacity:0.9;margin-top:10px;}
+
+.search-box{
+text-align:center;
+margin:30px 20px;
+}
+
+input{
+padding:12px;
+width:300px;
+max-width:90%;
+border-radius:30px;
+border:none;
+outline:none;
+font-size:16px;
+}
+
+.categories{
+text-align:center;
+margin:20px;
+}
+
+.categories button{
+margin:8px;
+padding:10px 20px;
+border:none;
+border-radius:20px;
+background:#00c6ff;
+color:white;
+cursor:pointer;
+transition:0.3s;
+}
+
+.categories button:hover{
+background:#0072ff;
+transform:scale(1.05);
+}
+
+.container{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+padding:40px;
+}
+
+.card{
+background:rgba(255,255,255,0.08);
+padding:20px;
+border-radius:15px;
+backdrop-filter:blur(10px);
+transition:0.4s;
+animation:fadeUp 1s ease-in-out;
+}
+
+.card:hover{
+transform:translateY(-8px);
+background:rgba(255,255,255,0.18);
+}
+
+.card h3{margin-bottom:10px;}
+.card p{font-size:14px;opacity:0.85;}
+.card a{
+display:inline-block;
+margin-top:10px;
+padding:8px 15px;
+background:#00c6ff;
+border-radius:8px;
+color:white;
+text-decoration:none;
+font-size:14px;
+}
+
+footer{
+text-align:center;
+padding:30px;
+background:rgba(0,0,0,0.4);
+margin-top:40px;
+}
+
+@keyframes fadeIn{
+from{opacity:0;}
+to{opacity:1;}
+}
+
+@keyframes fadeUp{
+from{opacity:0;transform:translateY(20px);}
+to{opacity:1;transform:translateY(0);}
+}
+
+@media(max-width:600px){
+h1{font-size:24px;}
+}
+</style>
+
+<script>
+function searchTools(){
+let input=document.getElementById('search').value.toLowerCase();
+let cards=document.getElementsByClassName('card');
+for(let i=0;i<cards.length;i++){
+let title=cards[i].getElementsByTagName("h3")[0].innerText.toLowerCase();
+if(title.includes(input)){
+cards[i].style.display="block";
+}else{
+cards[i].style.display="none";
+}
+}
+}
+
+function filterCategory(category){
+let cards=document.getElementsByClassName('card');
+for(let i=0;i<cards.length;i++){
+if(category==="all"){
+cards[i].style.display="block";
+}else{
+if(cards[i].dataset.category===category){
+cards[i].style.display="block";
+}else{
+cards[i].style.display="none";
+}
+}
+}
+}
+</script>
+
+</head>
+<body>
+
+<header>
+<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+<h1>Колледж оқытушыларына арналған 30 цифрлық құрал</h1>
+<p>Сабақты жоспарлау, тест жасау, дизайн және басқаруға арналған үздік AI платформалар</p>
+</header>
+
+<div class="search-box">
+<input type="text" id="search" onkeyup="searchTools()" placeholder="Платформаны іздеу...">
+</div>
+
+<div class="categories">
+<button onclick="filterCategory('all')">Барлығы</button>
+<button onclick="filterCategory('planning')">Жоспарлау</button>
+<button onclick="filterCategory('test')">Тесттер</button>
+<button onclick="filterCategory('design')">Дизайн</button>
+<button onclick="filterCategory('video')">Видео</button>
+<button onclick="filterCategory('analysis')">Аналитика</button>
+</div>
+
+<div class="container">
+
+<!-- 30 ПЛАТФОРМА -->
+<div class="card" data-category="planning"><h3>ChatGPT</h3><p>Сабақ жоспары мен тапсырма жасау.</p><a href="https://chat.openai.com" target="_blank">Өту</a></div>
+<div class="card" data-category="design"><h3>Canva</h3><p>Презентация және инфографика.</p><a href="https://www.canva.com" target="_blank">Өту</a></div>
+<div class="card" data-category="test"><h3>Kahoot</h3><p>Интерактивті викторина.</p><a href="https://kahoot.com" target="_blank">Өту</a></div>
+<div class="card" data-category="test"><h3>Quizizz</h3><p>Онлайн тесттер.</p><a href="https://quizizz.com" target="_blank">Өту</a></div>
+<div class="card" data-category="test"><h3>Google Forms</h3><p>Сауалнама және тест.</p><a href="https://forms.google.com" target="_blank">Өту</a></div>
+<div class="card" data-category="planning"><h3>Notion AI</h3><p>Жоспар және жазбалар.</p><a href="https://notion.so" target="_blank">Өту</a></div>
+<div class="card" data-category="planning"><h3>Perplexity AI</h3><p>Оқу материалдарын іздеу.</p><a href="https://perplexity.ai" target="_blank">Өту</a></div>
+<div class="card" data-category="planning"><h3>Socratic</h3><p>Студент сұрақтарына жауап.</p><a href="https://socratic.org" target="_blank">Өту</a></div>
+<div class="card" data-category="analysis"><h3>Grammarly</h3><p>Мәтінді тексеру.</p><a href="https://grammarly.com" target="_blank">Өту</a></div>
+<div class="card" data-category="analysis"><h3>DeepL</h3><p>Аударма жасау.</p><a href="https://deepl.com" target="_blank">Өту</a></div>
+<div class="card" data-category="analysis"><h3>QuillBot</h3><p>Мәтінді қайта жазу.</p><a href="https://quillbot.com" target="_blank">Өту</a></div>
+<div class="card" data-category="video"><h3>EdPuzzle</h3><p>Видеоға сұрақ қосу.</p><a href="https://edpuzzle.com" target="_blank">Өту</a></div>
+<div class="card" data-category="planning"><h3>GitHub Copilot</h3><p>Бағдарламалау көмекшісі.</p><a href="https://github.com/features/copilot" target="_blank">Өту</a></div>
+<div class="card" data-category="analysis"><h3>ChatPDF</h3><p>PDF талдау.</p><a href="https://chatpdf.com" target="_blank">Өту</a></div>
+<div class="card" data-category="video"><h3>Runway ML</h3><p>Видео және анимация.</p><a href="https://runwayml.com" target="_blank">Өту</a></div>
+
+<!-- Қосымша 15 -->
+<div class="card" data-category="design"><h3>DALL·E</h3><p>AI сурет генерациясы.</p><a href="https://openai.com/dall-e" target="_blank">Өту</a></div>
+<div class="card" data-category="design"><h3>Midjourney</h3><p>Креативті иллюстрация.</p><a href="https://midjourney.com" target="_blank">Өту</a></div>
+<div class="card" data-category="design"><h3>Stable Diffusion</h3><p>AI сурет жасау.</p><a href="https://stability.ai" target="_blank">Өту</a></div>
+<div class="card" data-category="video"><h3>Synthesia</h3><p>AI видео сабақ.</p><a href="https://synthesia.io" target="_blank">Өту</a></div>
+<div class="card" data-category="video"><h3>Pictory</h3><p>Мәтінді видеоға айналдыру.</p><a href="https://pictory.ai" target="_blank">Өту</a></div>
+<div class="card" data-category="video"><h3>Designs.ai</h3><p>Видео және презентация.</p><a href="https://designs.ai" target="_blank">Өту</a></div>
+<div class="card" data-category="video"><h3>Elai.io</h3><p>Онлайн видео генерация.</p><a href="https://elai.io" target="_blank">Өту</a></div>
+<div class="card" data-category="analysis"><h3>Century Tech</h3><p>Жеке оқу траекториясы.</p><a href="https://century.tech" target="_blank">Өту</a></div>
+<div class="card" data-category="analysis"><h3>Squirrel AI</h3><p>Адаптивті оқыту.</p><a href="https://squirrelai.com" target="_blank">Өту</a></div>
+<div class="card" data-category="analysis"><h3>Kidaptive</h3><p>Оқушы талдау.</p><a href="https://kidaptive.com" target="_blank">Өту</a></div>
+<div class="card" data-category="analysis"><h3>Gradescope</h3><p>Автоматты бағалау.</p><a href="https://gradescope.com" target="_blank">Өту</a></div>
+<div class="card" data-category="analysis"><h3>Otter.ai</h3><p>Дәріс транскрипциясы.</p><a href="https://otter.ai" target="_blank">Өту</a></div>
+<div class="card" data-category="planning"><h3>Tinkercad</h3><p>3D модельдеу.</p><a href="https://tinkercad.com" target="_blank">Өту</a></div>
+<div class="card" data-category="planning"><h3>Jasper AI</h3><p>Креативті мәтін.</p><a href="https://jasper.ai" target="_blank">Өту</a></div>
+<div class="card" data-category="planning"><h3>Quillionz</h3><p>Мәтіннен сұрақ жасау.</p><a href="https://quillionz.com" target="_blank">Өту</a></div>
+
+</div>
+
+<footer>
+© 2026 Колледжге арналған премиум AI құралдар жинағы
+</footer>
+
+</body>
+</html>
